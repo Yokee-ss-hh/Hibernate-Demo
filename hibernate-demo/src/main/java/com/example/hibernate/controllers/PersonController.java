@@ -1,5 +1,7 @@
 package com.example.hibernate.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -26,9 +28,22 @@ public class PersonController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(p);
 	}
 	
+	@PostMapping(path = "/post-persons")
+	public ResponseEntity<List<Person>> postPersons(RequestEntity<List<Person>> personsData){
+		List<Person> p = personService.createPersons(personsData.getBody());
+		return ResponseEntity.status(HttpStatus.CREATED).body(p);
+	}
+	
 	@GetMapping(path = "/get-person/{id}")
 	public ResponseEntity<Person> getPerson(@PathVariable(value = "id") int personId){
 		Person p = personService.fetchPerson(personId);
 		return ResponseEntity.status(HttpStatus.OK).body(p);
 	}
+	
+	@GetMapping(path = "/get-persons")
+	public ResponseEntity<List<Person>> getPersons(){
+		List<Person> p = personService.fetchPersons();
+		return ResponseEntity.status(HttpStatus.OK).body(p);
+	}
+	
 }
